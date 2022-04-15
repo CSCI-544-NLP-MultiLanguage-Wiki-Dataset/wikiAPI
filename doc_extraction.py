@@ -6,24 +6,44 @@ from collections import deque
 from datetime import datetime
 from utils import *
 
-lang = 'en'
-categories = {'Science':0, 'Sports':1, 'Economy':2, 'Politics':3, 'Education':4, 'Health':5, 'Entertainment':6}
-stopPhrases = ['list of', 'index of']
+# lang = 'en'
+# categories = ['Science', 'Sports', 'Economy', 'Politics', 'Education', 'Health', 'Entertainment']
+# stopPhrases = ['list of', 'index of']
 
-# lang = 'tr'
-# categories = {'Bilim':0, 'Spor':1, 'Ekonomi':2, 'Siyaset':3, 'Eğitim':4, 'Sağlık':5, 'Eğlence':6}
-# stopPhrases = ['listesi']
+lang = 'tr'
+categories = ['Bilim', 'Spor', 'Ekonomi', 'Siyaset', 'Eğitim', 'Sağlık', 'Eğlence']
+stopPhrases = ['listesi']
 
-num_docs = 100
+num_docs = 1000
 minSummaryLen = 100
 maxCatQueueSize = 200
+switch_append = "append" # append or create a dataset
+
+# either create a new dataset or append to a previously created one
+if switch_append == "append":
+    file_name = "tr_04_14.csv"
+else:
+    file_name =  "{}{}.csv".format(lang, datetime.now().strftime("_%m_%d"))
+
+# setup the paths
+save_folder = os.path.join(sys.path[0], 'datasets')
+if not os.path.exists(save_folder):
+    os.makedirs(save_folder)
+file_dir = os.path.join(save_folder, file_name)
+
+# if appending a dataset, load it
+if switch_append == "append":
+    data = pd.read_csv(file_dir)
+else:
+    data = pd.DataFrame()
+
 wiki_wiki = wikipediaapi.Wikipedia(lang)
 
 # create a filter to be used in filtering the documents
 myFilter = filter(minSummaryLen, stopPhrases)
 
-data = pd.DataFrame()
-for cat_str, cat_num in categories.items():
+for cat_num in range(len(categories)): # 6,7
+    cat_str = categories[cat_num]
     cat = wiki_wiki.page("Category:{}".format(cat_str))
     # create a category queue to implement BFS, BFS is preferred in searching articles 
     # because DFS would go in depth and can quickly extract irrelevant articles
@@ -58,12 +78,6 @@ for cat_str, cat_num in categories.items():
                 # it is neither category nor article, skip
                 continue
 
-
-file_name =  "{}{}.csv".format(lang, datetime.now().strftime("_%m_%d"))
-save_folder = os.path.join(sys.path[0], 'datasets')
-if not os.path.exists(save_folder):
-    os.makedirs(save_folder)
-file_dir = os.path.join(save_folder, file_name)
-data.to_csv(file_dir)
+    data.to_csv(file_dir)
 
 

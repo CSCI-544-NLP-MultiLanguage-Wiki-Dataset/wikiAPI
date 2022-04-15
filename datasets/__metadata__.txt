@@ -1,0 +1,14 @@
+Languages: {'en': 'English', 'tr': 'Turkish'}
+Categories: {
+    '0': ['Science', 'Bilim'],
+    '1': ['Sports', 'Spor'],
+    '2': ['Economy', 'Ekonomi'],
+    '3': ['Politics', 'Siyaset'],
+    '4': ['Education', 'Eğitim'],
+    '5': ['Health', 'Sağlık'],
+    '6': ['Entertainment', 'Eğlence']
+}
+StopPhrases: {
+    'en' : ['list of', 'index of'],
+    'tr' : ['listesi']
+}

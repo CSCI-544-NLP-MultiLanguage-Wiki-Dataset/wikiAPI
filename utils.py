@@ -2,11 +2,14 @@ import wikipediaapi
 import requests
 from bs4 import BeautifulSoup
 
-def getCitations(doc, k = None):
+def getCitations(doc, lang, k = None):
     '''
     getCitations function returns the references in the summary.
     '''
-    rq = f"https://en.wikipedia.org/?curid={doc.pageid}"
+    if lang == 'en':
+        rq = f"https://en.wikipedia.org/?curid={doc.pageid}"
+    elif lang == 'tr':
+        rq = f"https://tr.wikipedia.org/?curid={doc.pageid}"
     req = requests.get(rq)
     soup = bs(req.text, "html.parser")
     main = soup.find("div", {"class": "mw-parser-output"})

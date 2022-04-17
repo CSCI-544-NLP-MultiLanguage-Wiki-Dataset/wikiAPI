@@ -1,4 +1,4 @@
-import wikipediaapi
+import wikipediaapi as wapi
 import requests
 from bs4 import BeautifulSoup
 

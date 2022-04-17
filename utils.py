@@ -1,4 +1,26 @@
 import wikipediaapi
+import requests
+from bs4 import BeautifulSoup
+
+def getCitations(doc, k = None):
+    '''
+    getCitations function returns the references in the summary.
+    '''
+    rq = f"https://en.wikipedia.org/?curid={doc.pageid}"
+    req = requests.get(rq)
+    soup = bs(req.text, "html.parser")
+    main = soup.find("div", {"class": "mw-parser-output"})
+    toc = main.find("div", {"id":"toc"})
+    links = []
+    for tag in main:
+        if tag == toc:
+            break
+        if tag.name == 'p':
+            links.extend(list(map(lambda x: x.get('href'), tag.find_all('a'))))
+
+    final_links = list(filter(lambda x: x[:5] == '/wiki', links))
+
+    return final_links
 
 def getTopKLinks(doc, k=3):
     '''

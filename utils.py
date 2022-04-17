@@ -6,10 +6,10 @@ def getCitations(doc, lang, k = None):
     '''
     getCitations function returns the references in the summary.
     '''
-    if lang == 'en':
-        rq = f"https://en.wikipedia.org/?curid={doc.pageid}"
-    elif lang == 'tr':
-        rq = f"https://tr.wikipedia.org/?curid={doc.pageid}"
+
+    wiki = wapi.Wikipedia(lang)
+
+    rq = f"https://{lang}.wikipedia.org/?curid={doc.pageid}"
     req = requests.get(rq)
     soup = bs(req.text, "html.parser")
     main = soup.find("div", {"class": "mw-parser-output"})
@@ -21,7 +21,15 @@ def getCitations(doc, lang, k = None):
         if tag.name == 'p':
             links.extend(list(map(lambda x: x.get('href'), tag.find_all('a'))))
 
-    final_links = list(filter(lambda x: x[:5] == '/wiki', links))
+    links = list(filter(lambda x: x[:5] == '/wiki', links))
+    final_links = []
+
+    for l in links:
+        url = f"https://{lang}.wikipedia.org{l}"
+        reql = requests.get(url)
+        soupl = BeautifulSoup(reql.text, "html.parser")
+
+        final_links.append(wiki.page(soupl.find("h1", {"id": "firstHeading"}).text).pageid)
 
     return final_links
 

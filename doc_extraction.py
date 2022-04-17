@@ -6,18 +6,18 @@ from collections import deque
 from datetime import datetime
 from utils import *
 
-# lang = 'en'
-# categories = ['Science', 'Sports', 'Economy', 'Politics', 'Education', 'Health', 'Entertainment']
-# stopPhrases = ['list of', 'index of']
+lang = 'en'
+categories = ['Science', 'Sports', 'Economy', 'Politics', 'Education', 'Health', 'Entertainment']
+stopPhrases = ['list of', 'index of']
 
-lang = 'tr'
-categories = ['Bilim', 'Spor', 'Ekonomi', 'Siyaset', 'Eğitim', 'Sağlık', 'Eğlence']
-stopPhrases = ['listesi']
+# lang = 'tr'
+# categories = ['Bilim', 'Spor', 'Ekonomi', 'Siyaset', 'Eğitim', 'Sağlık', 'Eğlence']
+# stopPhrases = ['listesi']
 
 num_docs = 1000
 minSummaryLen = 100
 maxCatQueueSize = 200
-switch_append = "append" # append or create a dataset
+switch_append = "create" # append or create a dataset
 
 # either create a new dataset or append to a previously created one
 if switch_append == "append":
@@ -68,6 +68,7 @@ for cat_num in range(len(categories)): # 6,7
                     _text = doc.summary
                     # TODO: this takes some time if performed for all the links
                     _links = getTopKLinks(doc, k=3)
+                    # _links = getCitations(doc, lang)
                     thisRow = pd.DataFrame({'pageid':[_id], 'title':[_title], 'category':[cat_str], 'label':[cat_num], 'language':[lang], 'text':[_text], 'links':[_links]})
                     data = pd.concat([data,thisRow], ignore_index=True, axis=0)
                     countDocs += 1

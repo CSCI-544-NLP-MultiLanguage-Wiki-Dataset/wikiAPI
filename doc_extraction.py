@@ -9,6 +9,7 @@ from utils import *
 lang = 'en'
 categories = ['Science', 'Sports', 'Economy', 'Politics', 'Education', 'Health', 'Entertainment']
 stopPhrases = ['list of', 'index of']
+categoryNumsToRun = [1,2,3]
 
 # lang = 'tr'
 # categories = ['Bilim', 'Spor', 'Ekonomi', 'Siyaset', 'Eğitim', 'Sağlık', 'Eğlence']
@@ -42,7 +43,7 @@ wiki_wiki = wikipediaapi.Wikipedia(lang)
 # create a filter to be used in filtering the documents
 myFilter = filter(minSummaryLen, stopPhrases)
 
-for cat_num in range(len(categories)): # 6,7
+for cat_num in categoryNumsToRun: # range(len(categories)):
     cat_str = categories[cat_num]
     cat = wiki_wiki.page("Category:{}".format(cat_str))
     # create a category queue to implement BFS, BFS is preferred in searching articles 
@@ -67,8 +68,8 @@ for cat_num in range(len(categories)): # 6,7
                     _title = doc.title
                     _text = doc.summary
                     # TODO: this takes some time if performed for all the links
-                    _links = getTopKLinks(doc, k=3)
-                    # _links = getCitations(doc, lang)
+                    # _links = getTopKLinks(doc, k=3)
+                    _links = getCitations(doc, lang)
                     thisRow = pd.DataFrame({'pageid':[_id], 'title':[_title], 'category':[cat_str], 'label':[cat_num], 'language':[lang], 'text':[_text], 'links':[_links]})
                     data = pd.concat([data,thisRow], ignore_index=True, axis=0)
                     countDocs += 1

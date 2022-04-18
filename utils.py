@@ -1,13 +1,13 @@
-import wikipediaapi as wapi
+import wikipediaapi
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup as bs
 
-def getCitations(doc, lang, k = None):
+def getCitations(doc, lang, k=None):
     '''
     getCitations function returns the references in the summary.
     '''
 
-    wiki = wapi.Wikipedia(lang)
+    wiki = wikipediaapi.Wikipedia(lang)
 
     rq = f"https://{lang}.wikipedia.org/?curid={doc.pageid}"
     req = requests.get(rq)
@@ -21,13 +21,17 @@ def getCitations(doc, lang, k = None):
         if tag.name == 'p':
             links.extend(list(map(lambda x: x.get('href'), tag.find_all('a'))))
 
-    links = list(filter(lambda x: x[:5] == '/wiki', links))
+    # links = list(filter(lambda x: x[:5] == '/wiki', links))
+    filteredLinks = []
+    for link in links:
+        if link[:5] == '/wiki':
+            filteredLinks.append(link)
     final_links = []
 
-    for l in links:
+    for l in filteredLinks:
         url = f"https://{lang}.wikipedia.org{l}"
         reql = requests.get(url)
-        soupl = BeautifulSoup(reql.text, "html.parser")
+        soupl = bs(reql.text, "html.parser")
 
         final_links.append(wiki.page(soupl.find("h1", {"id": "firstHeading"}).text).pageid)
 

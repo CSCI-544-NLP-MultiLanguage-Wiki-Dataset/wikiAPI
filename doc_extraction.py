@@ -73,7 +73,7 @@ for cat_num in categoryNumsToRun: # range(len(categories)):
                     thisRow = pd.DataFrame({'pageid':[_id], 'title':[_title], 'category':[cat_str], 'label':[cat_num], 'language':[lang], 'text':[_text], 'links':[_links]})
                     data = pd.concat([data,thisRow], ignore_index=True, axis=0)
                     countDocs += 1
-                    print("Categorty: {} -- doc #{}".format(cat_str, countDocs))
+                    print("Categorty: {} -- doc #{} -- title: {}".format(cat_str, countDocs, _title))
                     if countDocs >= num_docs:
                         break
             else:

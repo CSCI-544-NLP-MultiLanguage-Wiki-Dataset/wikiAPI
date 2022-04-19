@@ -9,7 +9,7 @@ from utils import *
 lang = 'en'
 categories = ['Science', 'Sports', 'Economy', 'Politics', 'Education', 'Health', 'Entertainment']
 stopPhrases = ['list of', 'index of']
-categoryNumsToRun = [1,2,3]
+categoryNumsToRun = [4,5,6]
 
 # lang = 'tr'
 # categories = ['Bilim', 'Spor', 'Ekonomi', 'Siyaset', 'Eğitim', 'Sağlık', 'Eğlence']
@@ -18,11 +18,11 @@ categoryNumsToRun = [1,2,3]
 num_docs = 1000
 minSummaryLen = 100
 maxCatQueueSize = 200
-switch_append = "create" # append or create a dataset
+switch_append = "append" # append or create a dataset
 
 # either create a new dataset or append to a previously created one
 if switch_append == "append":
-    file_name = "tr_04_14.csv"
+    file_name = "en_04_18.csv"
 else:
     file_name =  "{}{}.csv".format(lang, datetime.now().strftime("_%m_%d"))
 
@@ -73,7 +73,7 @@ for cat_num in categoryNumsToRun: # range(len(categories)):
                     thisRow = pd.DataFrame({'pageid':[_id], 'title':[_title], 'category':[cat_str], 'label':[cat_num], 'language':[lang], 'text':[_text], 'links':[_links]})
                     data = pd.concat([data,thisRow], ignore_index=True, axis=0)
                     countDocs += 1
-                    print("Categorty: {} -- doc #{}".format(cat_str, countDocs))
+                    print("Categorty: {} -- doc #{} -- title: {}".format(cat_str, countDocs, _title))
                     if countDocs >= num_docs:
                         break
             else:

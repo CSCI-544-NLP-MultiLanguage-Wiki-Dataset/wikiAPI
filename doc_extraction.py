@@ -9,7 +9,7 @@ from utils import *
 lang = 'en'
 categories = ['Science', 'Sports', 'Economy', 'Politics', 'Education', 'Health', 'Entertainment']
 stopPhrases = ['list of', 'index of']
-categoryNumsToRun = [4,5,6]
+categoryNumsToRun = [1,2,3]
 
 # lang = 'tr'
 # categories = ['Bilim', 'Spor', 'Ekonomi', 'Siyaset', 'Eğitim', 'Sağlık', 'Eğlence']

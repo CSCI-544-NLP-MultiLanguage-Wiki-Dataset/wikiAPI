@@ -24,6 +24,8 @@ def getCitations(doc, lang, k=None):
     # links = list(filter(lambda x: x[:5] == '/wiki', links))
     filteredLinks = []
     for link in links:
+        if link==None:
+            continue
         if link[:5] == '/wiki':
             filteredLinks.append(link)
     final_links = []
